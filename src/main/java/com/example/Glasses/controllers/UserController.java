@@ -19,7 +19,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public Optional<User> getUser(@PathVariable("id") int id){
-        return userService.findByUserId(id);
+    public User getUser(@PathVariable("id") int id){
+        return userService.findByUserId(id).get();
     }
 }
