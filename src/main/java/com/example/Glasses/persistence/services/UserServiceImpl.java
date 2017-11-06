@@ -1,7 +1,7 @@
-package com.example.Glasses.services;
+package com.example.Glasses.persistence.services;
 
-import com.example.Glasses.model.User;
-import com.example.Glasses.repositories.UserRepository;
+import com.example.Glasses.persistence.model.User;
+import com.example.Glasses.persistence.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor(onConstructor = @_(@Autowired))
 @NoArgsConstructor
+@Deprecated
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;

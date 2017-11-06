@@ -1,4 +1,4 @@
-package com.example.Glasses.model;
+package com.example.Glasses.persistence.model;
 
 import com.example.Glasses.validators.ExtendedEmailValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -42,8 +41,8 @@ public class User implements Serializable {
     @Column(name = "confirmation_email_token")
     String confirmationEmailToken;
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "user_details_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="userDetails")
     private UserDetails userDetails;
 }
 

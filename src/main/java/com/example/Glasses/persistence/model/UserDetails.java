@@ -1,4 +1,4 @@
-package com.example.Glasses.model;
+package com.example.Glasses.persistence.model;
 
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class UserDetails implements Serializable {
     private int userDetailsId;
 
     @Column(name = "username")
-    private String Username;
+    private String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -28,4 +28,7 @@ public class UserDetails implements Serializable {
     @Column(name ="last_name")
     private String lastName;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name="cart")
+    private Cart cart;
 }

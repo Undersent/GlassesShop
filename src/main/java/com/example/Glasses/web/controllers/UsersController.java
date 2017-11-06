@@ -1,7 +1,7 @@
-package com.example.Glasses.controllers;
+package com.example.Glasses.web.controllers;
 
-import com.example.Glasses.model.User;
-import com.example.Glasses.services.UserService;
+import com.example.Glasses.persistence.model.User;
+import com.example.Glasses.persistence.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,8 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor(onConstructor = @_(@Autowired))
-@RequestMapping("/users")
+@RequestMapping("/users666")
+@Deprecated
 public class UsersController {
 
     UserService userService;
@@ -22,7 +23,7 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<?> postUser(@RequestBody User user){
         try {
-            Optional.ofNullable(user.getEmail()).orElseThrow(Exception::new);
+            //Optional.ofNullable(user.getEmail()).orElseThrow(Exception::new);
             validateUser(user.getEmail());
         } catch (Exception e1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -37,7 +38,6 @@ public class UsersController {
     public Page<User> getUsers(Pageable pageable){
         return userService.findAll(pageable);
     }
-
 
     private void validateUser(String email) throws Exception {
         userService.findByEmail(email)

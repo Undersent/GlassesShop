@@ -1,4 +1,4 @@
-package com.example.Glasses.model;
+package com.example.Glasses.persistence.model;
 
 import lombok.*;
 
