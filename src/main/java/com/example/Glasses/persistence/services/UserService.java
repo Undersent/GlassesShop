@@ -6,11 +6,14 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-@Deprecated
+
 public interface UserService {
     Optional<User> findByEmail(String email);
     Optional<User> findByUserId(int id);
     Page<User> findAll(Pageable pageable);
     User saveUser(User user);
     User UpdateStaffById(User user);
+    void createVerificationTokenForUser(User user, String token);
+
+    User createUserAccount(User account);
 }

@@ -24,7 +24,6 @@ public interface UserRepository extends JpaRepository<User, Integer>,
     default void customize(final QuerydslBindings bindings, final QUser root) {
         bindings.bind(String.class)
                 .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
-        //bindings.excluding(...);
     }
 
     Optional<User> findByEmail(String email);

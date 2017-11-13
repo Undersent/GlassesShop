@@ -16,7 +16,7 @@ public class UserPredicate {
     }
 
     public BooleanExpression getPredicate() {
-        final PathBuilder<User> entityPath = new PathBuilder<>(User.class, "myUser");
+        final PathBuilder<User> entityPath = new PathBuilder<>(User.class, "user");
 
         if (isNumeric(criteria.getValue().toString())) {
             final NumberPath<Integer> path = entityPath.getNumber(criteria.getKey(), Integer.class);
