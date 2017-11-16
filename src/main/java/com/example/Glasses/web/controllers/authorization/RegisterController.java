@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -41,6 +38,18 @@ public class RegisterController {
                 new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
 
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping(value = "/confirm")
+    public ResponseEntity<?> confirmRegistration(@RequestParam("token") final String token) {
+        final String result = userService.validateVerificationToken(token);
+        if (result.equals("TOKEN_VALID")) {
+            //final User user = userService.getUserByToken(token);
+            return new ResponseEntity("User confirmed", HttpStatus.ACCEPTED);
+
+        }
+        return new ResponseEntity("Token not found", HttpStatus.NOT_FOUND);
+
     }
 
 }
