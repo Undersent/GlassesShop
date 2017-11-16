@@ -46,7 +46,7 @@ public class UserControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        RestAssuredMockMvc.standaloneSetup(new UserController(userRepository,roleRepository));
+        //RestAssuredMockMvc.standaloneSetup(new UserController(userRepository,roleRepository));
         RestAssured.authentication = basic("username", "password");
         //RestAssured.given().auth()
 

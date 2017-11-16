@@ -52,10 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createVerificationTokenForUser(final User user, final String token) {
+    public void createVerificationTokenForUser(User user, String token) {
         final VerificationToken myToken = VerificationToken.builder()
                 .token(token)
-                .user(user).build();
+                .user(user)
+                .build();
         tokenRepository.save(myToken);
     }
 
