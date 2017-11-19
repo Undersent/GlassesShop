@@ -46,7 +46,6 @@ public class RegisterController {
         if (result.equals("TOKEN_VALID")) {
             //final User user = userService.getUserByToken(token);
             return new ResponseEntity("User confirmed", HttpStatus.ACCEPTED);
-
         }
         return new ResponseEntity("Token not found", HttpStatus.NOT_FOUND);
 
