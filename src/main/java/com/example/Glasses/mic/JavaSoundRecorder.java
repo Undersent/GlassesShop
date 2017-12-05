@@ -3,10 +3,6 @@ package com.example.Glasses.mic;
 import javax.sound.sampled.*;
 import java.io.*;
 
-/**
- * A sample program is to demonstrate how to record sound in Java
- * author: www.codejava.net
- */
 public class JavaSoundRecorder {
 
     boolean done = false;
