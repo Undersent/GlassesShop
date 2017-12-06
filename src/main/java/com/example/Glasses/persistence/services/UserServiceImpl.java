@@ -1,10 +1,10 @@
 package com.example.Glasses.persistence.services;
 
+import com.example.Glasses.persistence.model.Item;
 import com.example.Glasses.persistence.model.User;
+import com.example.Glasses.persistence.model.UserItem;
 import com.example.Glasses.persistence.model.VerificationToken;
-import com.example.Glasses.persistence.repositories.RoleRepository;
-import com.example.Glasses.persistence.repositories.UserRepository;
-import com.example.Glasses.persistence.repositories.VerificationTokenRepository;
+import com.example.Glasses.persistence.repositories.*;
 import com.example.Glasses.web.exception.TokenException;
 import com.example.Glasses.web.exception.UserException;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     private VerificationTokenRepository tokenRepository;
     private RoleRepository roleRepository;
+    private UserItemRepository userItemRepository;
+    private ItemRepository itemRepository;
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -68,6 +70,19 @@ public class UserServiceImpl implements UserService {
                 .build();
         myToken.updateToken(token);
         tokenRepository.save(myToken);
+    }
+
+    @Override
+    public void addItemToUserCart(int userId, int itemId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User with that id doesnt exist"));
+
+        userItemRepository.save(
+                UserItem.builder().cartId(user.getUserDetails().getCart().getCartId())
+                        .item(itemRepository.findByItemId(itemId).orElseThrow(
+                                () -> new RuntimeException("Item with that id doesnt exist")))
+                        .build()
+                );
     }
 
     @Override

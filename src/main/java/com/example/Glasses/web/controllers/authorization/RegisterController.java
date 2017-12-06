@@ -1,8 +1,10 @@
 package com.example.Glasses.web.controllers.authorization;
 
 import com.example.Glasses.persistence.model.User;
+import com.example.Glasses.persistence.model.UserDetails;
 import com.example.Glasses.persistence.services.UserService;
 import com.example.Glasses.registration.OnRegistrationCompleteEvent;
+import com.example.Glasses.web.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@RequestMapping(value = "user/registration")
+@RequestMapping(value = "/registration")
 @AllArgsConstructor(onConstructor = @_(@Autowired))
 @RestController
 public class RegisterController {
@@ -26,7 +28,10 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<?> registerUserAccount(
-            @RequestBody @Valid User account, HttpServletRequest request){
+            @RequestBody @Valid UserDto userDto, HttpServletRequest request){
+
+
+        User account = createUser(userDto);
 
         LOGGER.debug("Registering user account with information {}", account);
         User registered = userService.createUserAccount(account);
@@ -40,7 +45,22 @@ public class RegisterController {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/confirm")
+    private User createUser(UserDto userDto) {
+                return User.builder()
+                        .email(userDto.getEmail())
+                        .password(userDto.getPassword())
+                        .matchingPassword(userDto.getMatchingPassword())
+                        .userDetails(
+                                UserDetails.builder()
+                                        .firstName(userDto.getFirstName())
+                                        .lastName(userDto.getLastName())
+                                        .username(userDto.getUserName())
+                                        .build()
+                        )
+                        .build();
+    }
+
+    @GetMapping(value = "/confirm")
     public ResponseEntity<?> confirmRegistration(@RequestParam("token") final String token) {
         final String result = userService.validateVerificationToken(token);
         if (result.equals("TOKEN_VALID")) {

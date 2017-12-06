@@ -4,6 +4,7 @@ import com.example.Glasses.persistence.model.User;
 import com.example.Glasses.persistence.predicate.UserPredicateBuilder;
 import com.example.Glasses.persistence.repositories.RoleRepository;
 import com.example.Glasses.persistence.repositories.UserRepository;
+import com.example.Glasses.persistence.services.UserService;
 import com.example.Glasses.web.exception.UserException;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,12 @@ import java.util.regex.Pattern;
 
 @RestController
 @AllArgsConstructor(onConstructor = @_(@Autowired))
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     UserRepository userRepository;
     RoleRepository roleRepository;
+    UserService userService;
     ApplicationEventPublisher eventPublisher;
 
     @GetMapping("/{id}")
@@ -72,6 +74,14 @@ public class UserController {
                         .findByRole("ROLE_USER"))));
 
         userRepository.save(user);
+
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/item/{userId}/{itemId}")
+    public ResponseEntity<?> addItemToUser(@PathVariable int itemId,
+                                           @PathVariable int userId){
+        userService.addItemToUserCart(userId,itemId);
 
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }

@@ -1,5 +1,6 @@
 package com.example.Glasses.persistence.services;
 
+import com.example.Glasses.persistence.model.Item;
 import com.example.Glasses.persistence.model.User;
 import com.example.Glasses.persistence.model.VerificationToken;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ public interface UserService {
     User saveUser(User user);
     User UpdateStaffById(User user);
     void createVerificationTokenForUser(User user, String token);
-
+    void addItemToUserCart(int userId, int itemId);
     User createUserAccount(User account);
 
     String validateVerificationToken(String token);

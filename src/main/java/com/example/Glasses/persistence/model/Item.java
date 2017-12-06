@@ -26,4 +26,10 @@ public class Item {
 
     @Column(name = "price")
     private double price;
+
+    @Column(name = "correction")
+    private double correction;
+
+    @Column(name = "url")
+    private String url;
 }
