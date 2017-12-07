@@ -19,4 +19,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cart_id")
     private int cartId;
+
+    @Column(name = "user_id")
+    private int userId;
 }

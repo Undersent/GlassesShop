@@ -46,8 +46,8 @@ public class User implements Serializable {
     @Builder.Default
     private boolean enabled = false;
 
-    @Column(name = "confirmation_email_token")
-    String confirmationEmailToken;
+//    @Column(name = "confirmation_email_token")
+//    String confirmationEmailToken;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="userDetails")

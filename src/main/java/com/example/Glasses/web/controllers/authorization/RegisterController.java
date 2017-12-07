@@ -1,7 +1,11 @@
 package com.example.Glasses.web.controllers.authorization;
 
+import com.example.Glasses.persistence.model.Cart;
 import com.example.Glasses.persistence.model.User;
 import com.example.Glasses.persistence.model.UserDetails;
+import com.example.Glasses.persistence.model.VerificationToken;
+import com.example.Glasses.persistence.repositories.CartRepository;
+import com.example.Glasses.persistence.repositories.VerificationTokenRepository;
 import com.example.Glasses.persistence.services.UserService;
 import com.example.Glasses.registration.OnRegistrationCompleteEvent;
 import com.example.Glasses.web.dto.UserDto;
@@ -25,6 +29,8 @@ public class RegisterController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private ApplicationEventPublisher eventPublisher;
     private UserService userService;
+    private CartRepository cartRepository;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @PostMapping
     public ResponseEntity<?> registerUserAccount(
@@ -65,10 +71,24 @@ public class RegisterController {
         final String result = userService.validateVerificationToken(token);
         if (result.equals("TOKEN_VALID")) {
             //final User user = userService.getUserByToken(token);
+            createCartForUser(token);
             return new ResponseEntity("User confirmed", HttpStatus.ACCEPTED);
         }
         return new ResponseEntity("Token not found", HttpStatus.NOT_FOUND);
 
+    }
+
+    private void createCartForUser(String token) {
+        VerificationToken verToken = verificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Error with creating cart"));
+        Cart cart = Cart.builder()
+                .userId(verToken.getUser()
+                        .getUserId())
+                .build();
+
+        cartRepository.save(cart);
+        verToken.getUser().getUserDetails().setCart(cart);
+        userService.saveUser(verToken.getUser());
     }
 
 }
