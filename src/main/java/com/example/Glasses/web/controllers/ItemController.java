@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -45,6 +46,18 @@ public class ItemController {
     public Item getItems(@PathVariable("id") int id){
         return itemService.findByItemId(id)
                 .orElseThrow(() -> new RuntimeException("Item with that id not found"));
+    }
+
+    @GetMapping("/item/price")
+    public Collection<Item> getItemsByPriceBetween(@RequestParam("lo") double lo,
+                                     @RequestParam("hi") double hi){
+        return itemService.findByItemPrice(lo,hi);
+    }
+
+    @GetMapping("/item/correction")
+    public Collection<Item> getItemsByCorrectionBetween(@RequestParam("lo") double lo,
+                                                   @RequestParam("hi") double hi){
+        return itemService.findByItemCorrection(lo,hi);
     }
 
 
