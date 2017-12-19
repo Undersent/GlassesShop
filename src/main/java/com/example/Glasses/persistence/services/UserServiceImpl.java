@@ -1,9 +1,6 @@
 package com.example.Glasses.persistence.services;
 
-import com.example.Glasses.persistence.model.Item;
-import com.example.Glasses.persistence.model.User;
-import com.example.Glasses.persistence.model.UserItem;
-import com.example.Glasses.persistence.model.VerificationToken;
+import com.example.Glasses.persistence.model.*;
 import com.example.Glasses.persistence.repositories.*;
 import com.example.Glasses.web.exception.TokenException;
 import com.example.Glasses.web.exception.UserException;
@@ -14,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @_(@Autowired))
@@ -29,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     private UserItemRepository userItemRepository;
     private ItemRepository itemRepository;
+    private CartRepository cartRepository;
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -38,6 +34,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUserId(int id) {
         return userRepository.findByUserId(id);
+    }
+
+    @Override
+    public List<UserItem> findAllUserItems(int id) {
+        return userItemRepository.findAll()
+                .stream()
+                .filter(c->c.getCartId() == userRepository.findByUserId(id)
+                        .orElseThrow(
+                                ()->new RuntimeException("user with that id doesnt exist"))
+                        .getUserDetails()
+                        .getCart()
+                        .getCartId())
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -78,7 +88,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User with that id doesnt exist"));
 
         userItemRepository.save(
-                UserItem.builder().cartId(user.getUserDetails().getCart().getCartId())
+                UserItem.builder()
+                        .cartId(user.getUserDetails().getCart().getCartId())
                         .item(itemRepository.findByItemId(itemId).orElseThrow(
                                 () -> new RuntimeException("Item with that id doesnt exist")))
                         .build()

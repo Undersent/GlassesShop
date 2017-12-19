@@ -1,7 +1,7 @@
 package com.example.Glasses.web.controllers;
 
 import com.example.Glasses.persistence.model.User;
-import com.example.Glasses.persistence.predicate.UserPredicateBuilder;
+import com.example.Glasses.persistence.model.UserItem;
 import com.example.Glasses.persistence.repositories.RoleRepository;
 import com.example.Glasses.persistence.repositories.UserRepository;
 import com.example.Glasses.persistence.services.UserService;
@@ -15,15 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.querydsl.core.types.dsl.BooleanExpression;
 
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor(onConstructor = @_(@Autowired))
@@ -86,6 +83,11 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/item/{userId}/all")
+    private List<UserItem> getAllUserItems(@PathVariable int userId){
+        return userService.findAllUserItems(userId);
+    }
+
     private void validateUserByEmail(String email) {
         this.userRepository
                 .findByEmail(email)
@@ -94,5 +96,7 @@ public class UserController {
                     throw new UserException("user with that email exists");
                 });
     }
+
+
 
 }
