@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @RequestMapping("/users666")
 @Deprecated
 public class UsersController {
-
+    @Autowired
     UserService userService;
 
     @PostMapping

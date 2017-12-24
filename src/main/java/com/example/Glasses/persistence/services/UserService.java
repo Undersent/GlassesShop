@@ -2,6 +2,7 @@ package com.example.Glasses.persistence.services;
 
 import com.example.Glasses.persistence.model.User;
 import com.example.Glasses.persistence.model.UserItem;
+import com.example.Glasses.web.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,4 +23,6 @@ public interface UserService {
     User createUserAccount(User account);
 
     String validateVerificationToken(String token);
+
+    boolean deleteItemFromCart(int userId, int itemId);
 }

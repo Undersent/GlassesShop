@@ -22,14 +22,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequestMapping(value = "/registration")
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @RestController
 public class RegisterController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
+    @Autowired
     private UserService userService;
+    @Autowired
     private CartRepository cartRepository;
+    @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
     @PostMapping

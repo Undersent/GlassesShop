@@ -2,6 +2,7 @@ package com.example.Glasses.persistence.services;
 
 import com.example.Glasses.persistence.model.*;
 import com.example.Glasses.persistence.repositories.*;
+import com.example.Glasses.web.dto.UserDto;
 import com.example.Glasses.web.exception.TokenException;
 import com.example.Glasses.web.exception.UserException;
 import lombok.AllArgsConstructor;
@@ -15,15 +16,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     private VerificationTokenRepository tokenRepository;
+    @Autowired
     private RoleRepository roleRepository;
+    @Autowired
     private UserItemRepository userItemRepository;
+    @Autowired
     private ItemRepository itemRepository;
+    @Autowired
     private CartRepository cartRepository;
 
     @Override
@@ -121,6 +128,22 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         userRepository.save(user);
         return "TOKEN_VALID";
+    }
+
+    @Override
+    public boolean deleteItemFromCart(int userId, int itemId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User with that id doesnt exist"));
+
+        UserItem item = userItemRepository.findAll()
+                .stream()
+                .filter(i -> i.getItem().getItemId() == itemId)
+                .findAny()
+                .orElseThrow(()->new RuntimeException("UserItem cant be found"));
+
+        userItemRepository.delete(item);
+
+        return true;
     }
 
     private void validateUserByEmail(String email) {

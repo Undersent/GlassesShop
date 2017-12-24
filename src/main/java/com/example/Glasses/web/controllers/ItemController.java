@@ -13,10 +13,11 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @RequestMapping()
 public class ItemController {
 
+    @Autowired
     ItemService itemService;
 
     @PostMapping("/admin/item")

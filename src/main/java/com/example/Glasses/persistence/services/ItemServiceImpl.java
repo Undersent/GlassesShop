@@ -14,10 +14,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @NoArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
+    @Autowired
     private ItemRepository itemRepository;
 
     @Override

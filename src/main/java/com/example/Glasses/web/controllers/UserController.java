@@ -5,6 +5,7 @@ import com.example.Glasses.persistence.model.UserItem;
 import com.example.Glasses.persistence.repositories.RoleRepository;
 import com.example.Glasses.persistence.repositories.UserRepository;
 import com.example.Glasses.persistence.services.UserService;
+import com.example.Glasses.web.dto.UserDto;
 import com.example.Glasses.web.exception.UserException;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -23,13 +24,16 @@ import java.util.HashSet;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     RoleRepository roleRepository;
+    @Autowired
     UserService userService;
+    @Autowired
     ApplicationEventPublisher eventPublisher;
 
     @GetMapping("/{id}")
@@ -83,9 +87,22 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/item/{userId}/all")
-    private List<UserItem> getAllUserItems(@PathVariable int userId){
+    @PostMapping("/item/all")
+    public List<UserItem> getAllUserItems(@RequestBody int userId){
         return userService.findAllUserItems(userId);
+    }
+
+//    @GetMapping("/item/{userId}/all")
+//    private List<UserItem> getAllUserItems(@PathVariable int userId){
+//                return userService.findAllUserItems(userId);
+//            }
+
+    @DeleteMapping("/item/{itemId}")
+    public ResponseEntity<?> deleteItemFromCart(@PathVariable int itemId,
+            @RequestBody int userId){
+        userService.deleteItemFromCart(userId, itemId);
+
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     private void validateUserByEmail(String email) {

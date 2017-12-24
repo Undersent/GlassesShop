@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor(onConstructor = @_(@Autowired))
+@AllArgsConstructor
 @RequestMapping("/cart/{userId}")
 public class CartController {
 

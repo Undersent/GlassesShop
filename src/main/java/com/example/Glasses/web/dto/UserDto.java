@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDto {
 
+    int id;
     String email;
     String password;
     String matchingPassword;
